@@ -5,14 +5,14 @@
   
 
   
-  <title>阻止冒泡 | Hexo</title>
+  <title>css获取图片原始大小的小技巧 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="起因在某个网站上，通过脚本增加了一个div元素，并且添加了onCLick事件。实际点击后，不仅执行了脚本上onCLick回调，还执行了脚本里没有的内容。判断是div元素的父元素也有onClick事件，产生了冒泡。 解法通过e.stopPropagation()，阻止冒泡">
+  <meta name="description" content="css获取图片原始大小的小技巧123456789101112&#x2F;&#x2F; Get on screen imagevar screenImage &#x3D; document.getElementById(&amp;#x27;#img&amp;#x27;)&#x2F;&#x2F; Create new offscreen image to testvar theImage &#x3D; new Image();theImage.src &#x3D; screenImag">
 <meta property="og:type" content="article">
-<meta property="og:title" content="阻止冒泡">
-<meta property="og:url" content="http://liubei2077.github.io/2020/10/29/%E9%98%BB%E6%AD%A2%E5%86%92%E6%B3%A1/index.html">
+<meta property="og:title" content="css获取图片原始大小的小技巧">
+<meta property="og:url" content="http://liubei2077.github.io/2020/10/29/css%E8%8E%B7%E5%8F%96%E5%9B%BE%E7%89%87%E5%8E%9F%E5%A7%8B%E5%A4%A7%E5%B0%8F%E7%9A%84%E5%B0%8F%E6%8A%80%E5%B7%A7/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="起因在某个网站上，通过脚本增加了一个div元素，并且添加了onCLick事件。实际点击后，不仅执行了脚本上onCLick回调，还执行了脚本里没有的内容。判断是div元素的父元素也有onClick事件，产生了冒泡。 解法通过e.stopPropagation()，阻止冒泡">
+<meta property="og:description" content="css获取图片原始大小的小技巧123456789101112&#x2F;&#x2F; Get on screen imagevar screenImage &#x3D; document.getElementById(&amp;#x27;#img&amp;#x27;)&#x2F;&#x2F; Create new offscreen image to testvar theImage &#x3D; new Image();theImage.src &#x3D; screenImag">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-10-29T19:00:42.223Z">
 <meta property="article:modified_time" content="2020-10-29T19:00:42.223Z">
@@ -66,9 +66,9 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-阻止冒泡" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-css获取图片原始大小的小技巧" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/10/29/%E9%98%BB%E6%AD%A2%E5%86%92%E6%B3%A1/" class="article-date">
+    <a href="/2020/10/29/css%E8%8E%B7%E5%8F%96%E5%9B%BE%E7%89%87%E5%8E%9F%E5%A7%8B%E5%A4%A7%E5%B0%8F%E7%9A%84%E5%B0%8F%E6%8A%80%E5%B7%A7/" class="article-date">
   <time datetime="2020-10-29T19:00:42.223Z" itemprop="datePublished">2020-10-29</time>
 </a>
     
@@ -80,7 +80,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      阻止冒泡
+      css获取图片原始大小的小技巧
     </h1>
   
 
@@ -88,13 +88,11 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>在某个网站上，通过脚本增加了一个div元素，并且添加了onCLick事件。实际点击后，不仅执行了脚本上onCLick回调，还执行了脚本里没有的内容。判断是div元素的父元素也有onClick事件，产生了冒泡。</p>
-<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><p>通过e.stopPropagation()，阻止冒泡</p>
-
+        <h1 id="css获取图片原始大小的小技巧"><a href="#css获取图片原始大小的小技巧" class="headerlink" title="css获取图片原始大小的小技巧"></a>css获取图片原始大小的小技巧</h1><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Get on screen image</span></span><br><span class="line"><span class="keyword">var</span> screenImage = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;#img&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create new offscreen image to test</span></span><br><span class="line"><span class="keyword">var</span> theImage = <span class="keyword">new</span> Image();</span><br><span class="line">theImage.src = screenImage.src;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Get accurate measurements from that.</span></span><br><span class="line"><span class="keyword">var</span> imageWidth = theImage.width;</span><br><span class="line"><span class="keyword">var</span> imageHeight = theImage.height;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;imageWidth: &#x27;</span>,imageWidth)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;imageHeight: &#x27;</span>,imageHeight)</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://liubei2077.github.io/2020/10/29/%E9%98%BB%E6%AD%A2%E5%86%92%E6%B3%A1/" data-id="ckgv70twe0004yln554r10q6d" class="article-share-link">Share</a>
+      <a data-url="http://liubei2077.github.io/2020/10/29/css%E8%8E%B7%E5%8F%96%E5%9B%BE%E7%89%87%E5%8E%9F%E5%A7%8B%E5%A4%A7%E5%B0%8F%E7%9A%84%E5%B0%8F%E6%8A%80%E5%B7%A7/" data-id="ckgv70twa0001yln527kid4bg" class="article-share-link">Share</a>
       
       
     </footer>
@@ -103,15 +101,20 @@
     
 <nav id="article-nav">
   
-    <a href="/2020/10/29/one-dark-pro/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2020/10/29/css%E8%8E%B7%E5%8F%96%E5%9B%BE%E7%89%87%E5%8E%9F%E5%A7%8B%E5%A4%A7%E5%B0%8F%E7%9A%84%E5%B0%8F%E6%8A%80%E5%B7%A7/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          one dark pro 影响 markdown font-size
+          (no title)
         
       </div>
     </a>
   
+  
+    <a href="/2020/10/29/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hello World</div>
+    </a>
   
 </nav>
 
