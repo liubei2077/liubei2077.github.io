@@ -1,0 +1,15 @@
+# 获取图片原始大小的小技巧
+
+
+```js
+// Get on screen image
+var screenImage = $("#image");
+
+// Create new offscreen image to test
+var theImage = new Image();
+theImage.src = screenImage.attr("src");
+
+// Get accurate measurements from that.
+var imageWidth = theImage.width;
+var imageHeight = theImage.height;
+```
