@@ -67,7 +67,7 @@
     <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/10/29/hello-world/" class="article-date">
-  <time datetime="2020-10-29T18:09:38.914Z" itemprop="datePublished">2020-10-29</time>
+  <time datetime="2020-10-29T18:20:29.166Z" itemprop="datePublished">2020-10-29</time>
 </a>
     
   </div>
@@ -103,7 +103,46 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2020/10/29/hello-world/" data-id="ckgv576qn00006gnp31iehihp" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2020/10/29/hello-world/" data-id="ckgv5l44d0000vmly809k76rt" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-one-dark-pro" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/10/29/one-dark-pro/" class="article-date">
+  <time datetime="2020-10-29T18:20:29.166Z" itemprop="datePublished">2020-10-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/29/one-dark-pro/">one dark pro 影响 markdown font-size</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>one dark pro 是 vscode的一个主题，默认会开启对markdown preview加样式</p>
+<p>但是除了颜色还加了字体样式，导致在vscode中无论怎么设置markdown preview字体，都不会生效</p>
+<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><p>貌似可以自定义配置font-size，但是因为标题，代码块各种部分的字体都要设置，很麻烦，暂时先不动，有空更新。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/10/29/one-dark-pro/" data-id="ckgv5l44k0001vmly48y9gtpl" class="article-share-link">Share</a>
       
       
     </footer>
@@ -116,20 +155,30 @@
     <article id="post-trick" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/10/29/trick/" class="article-date">
-  <time datetime="2020-10-29T18:09:38.914Z" itemprop="datePublished">2020-10-29</time>
+  <time datetime="2020-10-29T18:20:29.166Z" itemprop="datePublished">2020-10-29</time>
 </a>
     
   </div>
   <div class="article-inner">
     
     
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/29/trick/">css获取图片原始大小的小技巧</a>
+    </h1>
+  
+
+      </header>
+    
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="获取图片原始大小的小技巧"><a href="#获取图片原始大小的小技巧" class="headerlink" title="获取图片原始大小的小技巧"></a>获取图片原始大小的小技巧</h1><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Get on screen image</span></span><br><span class="line"><span class="keyword">var</span> screenImage = $(<span class="string">&quot;#image&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create new offscreen image to test</span></span><br><span class="line"><span class="keyword">var</span> theImage = <span class="keyword">new</span> Image();</span><br><span class="line">theImage.src = screenImage.attr(<span class="string">&quot;src&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Get accurate measurements from that.</span></span><br><span class="line"><span class="keyword">var</span> imageWidth = theImage.width;</span><br><span class="line"><span class="keyword">var</span> imageHeight = theImage.height;</span><br></pre></td></tr></table></figure>
+        <h1 id="css获取图片原始大小的小技巧"><a href="#css获取图片原始大小的小技巧" class="headerlink" title="css获取图片原始大小的小技巧"></a>css获取图片原始大小的小技巧</h1><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Get on screen image</span></span><br><span class="line"><span class="keyword">var</span> screenImage = $(<span class="string">&quot;#image&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create new offscreen image to test</span></span><br><span class="line"><span class="keyword">var</span> theImage = <span class="keyword">new</span> Image();</span><br><span class="line">theImage.src = screenImage.attr(<span class="string">&quot;src&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Get accurate measurements from that.</span></span><br><span class="line"><span class="keyword">var</span> imageWidth = theImage.width;</span><br><span class="line"><span class="keyword">var</span> imageHeight = theImage.height;</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2020/10/29/trick/" data-id="ckgv576qu00016gnpf48yhmd1" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2020/10/29/trick/" data-id="ckgv5l44m0002vmlyeh5ig2zl" class="article-share-link">Share</a>
       
       
     </footer>
@@ -174,7 +223,11 @@
           </li>
         
           <li>
-            <a href="/2020/10/29/trick/">(no title)</a>
+            <a href="/2020/10/29/one-dark-pro/">one dark pro 影响 markdown font-size</a>
+          </li>
+        
+          <li>
+            <a href="/2020/10/29/trick/">css获取图片原始大小的小技巧</a>
           </li>
         
       </ul>
