@@ -64,6 +64,358 @@
       <div class="outer">
         <section id="main">
   
+    <article id="title-标签系统的思考" class="article article-type-title" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/01/%E6%A0%87%E7%AD%BE%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%80%9D%E8%80%83/" class="article-date">
+  <time datetime="2020-11-01T17:14:09.000Z" itemprop="datePublished">2020-11-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/01/%E6%A0%87%E7%AD%BE%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%80%9D%E8%80%83/">标签系统的思考</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="关于理想的整理资源用的标签系统的（思考）胡思乱想"><a href="#关于理想的整理资源用的标签系统的（思考）胡思乱想" class="headerlink" title="关于理想的整理资源用的标签系统的（思考）胡思乱想"></a>关于理想的整理资源用的标签系统的（<del>思考</del>）胡思乱想</h1><p>写完看了一下，写的<strong>乱七八糟</strong>，<strong>想到哪写到哪</strong>，大家随便看看</p>
+<h3 id="想法一：设计和维护资源的tag是一件非常复杂的事情-不论是业务上，还是从技术上"><a href="#想法一：设计和维护资源的tag是一件非常复杂的事情-不论是业务上，还是从技术上" class="headerlink" title="想法一：设计和维护资源的tag是一件非常复杂的事情,不论是业务上，还是从技术上"></a>想法一：设计和维护资源的tag是一件非常复杂的事情,不论是业务上，还是从技术上</h3><p>资源关联的tag首先肯定是不能做成blog里面的那种string[]形式，想象一下某个动漫的tag：<code>热血/科幻/奇幻/战斗/原创</code>,这样整理tag是要崩溃的。。</p>
+<p>为了引出话题，以对一部漫画增加tag信息的过程作为引子。（音乐，电影都资源可能遇到类似的问题）</p>
+<p>下面是《辉夜大小姐想让我告白》这一部漫画的元信息的结构和元信息本身：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> metaInfoInterface = &#123;</span><br><span class="line">  _id : ObjectID,</span><br><span class="line">  漫画名称: <span class="built_in">string</span>[],</span><br><span class="line">  作者: <span class="built_in">string</span>[],</span><br><span class="line">  ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> metaInfo : metaInfoInterface = &#123;</span><br><span class="line">  _id : someObjectID,</span><br><span class="line">  漫画名称: [</span><br><span class="line">    <span class="string">&quot;辉夜大小姐想让我告白&quot;</span>,</span><br><span class="line">    <span class="string">&quot;辉夜大小姐想让我告白～天才们的恋爱头脑战～&quot;</span>,</span><br><span class="line">    <span class="string">&quot;かぐや様は告らせたい〜天才たちの恋愛頭脳戦〜&quot;</span>,</span><br><span class="line">  ],</span><br><span class="line">  作者: [<span class="string">&quot;赤坂明&quot;</span>, <span class="string">&quot;赤坂アカ&quot;</span>],</span><br><span class="line">  <span class="comment">// 也可以这样标签：赤坂明（赤坂アカ）</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先，漫画的名称的设置遇到了障碍。</p>
+<ol>
+<li><p>因为这部漫画是日文原作的作品，如果将漫画的名称用单纯的string而不是string[]进行储存，那么就没法很好的将日文名称和中文名称同时储存。有的人说。我不需要保存日文名称，那一部作品如果有2个相似的译名呢。。。tag设计出来，最后的目的，是用来方便日后进行索引。从设计的角度来想，使用者不希望搜一个译名能搜出，另一个搜不出</p>
+</li>
+<li><p>漫画的名称往往因为翻译的不同，常常会有若干个中文翻译名称。《辉夜大小姐》日文名称还可以分为带副标题和不带副标题。而且以上讨论是不包含国际化的内容，仅仅只是有中日2种名称。如果想让系统做成类似于e站能够国际合作编辑tag，国际化也是少不了的。如果说做成</p>
+ <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">原作名称: [<span class="string">&quot;かぐや様は告らせたい〜天才たちの恋愛頭脳戦〜&quot;</span>],</span><br><span class="line">中文名称: [</span><br><span class="line">    <span class="string">&quot;辉夜大小姐想让我告白&quot;</span>,</span><br><span class="line">    <span class="string">&quot;辉夜大小姐想让我告白～天才们的恋爱头脑战～&quot;</span>,</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+<p>那么就相当于在metaInfo中，引入了业务逻辑，同时索引的业务逻辑就要发生变化。系统肯定是不断迭代的，不可能一次性设计完成，这对最初框架的可拓展性和去耦合设计要求较高。</p>
+</li>
+<li><p>假设场景往前更进一步，某位仓鼠党要把自己的本地漫画文件或者文件夹和这个元信息组合起来，构建一个索引系统，处理就更复杂了。上述的metaInfo是对应某一个单行本呢，还是对应漫画本身为一个整体呢？这个就更和业务逻辑相关了，而且每个人对应自己的需求，想法是不太一致的。</p>
+</li>
+<li><p>作者也是令人头大的一个选项，漫画的作者还分编剧和作画，可能最好的做法是只能都放到作者这个大类。有的画师除了中日双名，还有同人的社团笔名，加tag时，你是不是在创建所有和他有关的作品的条目时，还得把他的笔名给加上？不然之后按作者名称搜索时，作品展示是不全的</p>
+</li>
+</ol>
+<p>如此可见，每一个字段的设计都和业务需求和逻辑<strong>耦合</strong>，如何设计能使使用者真正的好用，是非常困难的。同时设计不能和业务耦合过重，不然就丧失了一定的通用性。</p>
+<p>当然上述可能还是因业务复杂而导致的技术问题为主，比如这些映射关系可能可以使用图数据库进行管理或者弄多张表进行级联操作（这样设计复杂度直线上升…）</p>
+<p>如果是一部同人作品，信息会更难以分类和增加tag，比如某个时候你只想看某一个角色的同人作品，那可能只能通过把角色的tag做成一个对象或者做成一张角色表解决<br>比如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> characterSchema = &#123;</span><br><span class="line">  officialName: <span class="string">&quot;千斗 いすず&quot;</span>,</span><br><span class="line">  avatar: <span class="string">&quot;./img/1030042352.jpg&quot;</span>,</span><br><span class="line">  alias: [<span class="string">&quot;せんと&quot;</span>, <span class="string">&quot;いすず&quot;</span>, <span class="string">&quot;千斗&quot;</span>, <span class="string">&quot;五十铃&quot;</span>, <span class="string">&quot;千斗 五十铃&quot;</span>, <span class="string">&quot;500&quot;</span>],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>搜索角色tag可以展示角色tag的别名和头像</p>
+<h3 id="想法二：通用共同资源、社区多人协作、规范标准"><a href="#想法二：通用共同资源、社区多人协作、规范标准" class="headerlink" title="想法二：通用共同资源、社区多人协作、规范标准"></a>想法二：通用共同资源、社区多人协作、规范标准</h3><p>下述的tag系统是一个关于软件和社区生态的<del>幻想</del></p>
+<ol>
+<li><p>通用共同资源：</p>
+<ul>
+<li>A是收集同人志和漫画的松鼠党，B也是，那么这两个人是能共用一套资源tag系统的。</li>
+<li>A是收集gal的松鼠党，B也是，这两个人也是能共用一套资源tag系统的。</li>
+<li>A是收集某个冷门偶像所有的演唱会、录像和fancam的松鼠党，那么估计不太能找到规模相对较大的团体和朋友和他共用一套资源tag系统，因为不满足通用资源或者共同资源的原则。</li>
+<li>通用共同性的资源，比如说U2收集动漫，收集音乐，收集gal，收集同人志等等</li>
+</ul>
+</li>
+<li><p>多人协作和规范标准：</p>
+<ul>
+<li>多人协作：一个人是整理不过来，不但信息整理不全，而且会慢慢消磨你的热情。以屯gal为例，一般是按发售时间，会社名称和作品名称对文件或者文件夹进行重命名进行分类保存。那么至少来说是丢失了画师，剧本，声优的维度。另外考虑到文件夹的重命名工具，脚本等等，估计是不大让人顺心的，很显然，要长久的运作下去，多人协作是必要的。</li>
+<li>规范标准：假设一个中心化的数据储存场景，使用者能定期同步数据储存到本地，并根据自己的需求，去建立条目，然后推送到远程服务端，就能复用信息。这就有点类似百度百科，维基百科，或者bangumi，2dfan那种，大家或者有一定权限的社区成员都能编辑，然后一起看。好处或者不同之处在于：<ol>
+<li>可以利用远程的tag系统的作品信息数据和自己本地的资源文件进行匹配，相对自建tag系统，可以说节省了很大的力气</li>
+<li>用户可以根据远程的tag系统的文件信息对比自己的本地文件信息，比如可以根据某个画师进行筛选，发现某个画师出新作品了，自己本地还没有</li>
+<li>tag系统应该支持自定义和使用本地化数据，在技术层面上自带一套统一规范，用户可以把自己的tag数据进行相互的导入和分享，可以使用自己的本地数据，也可以使用远程的社区数据源（比较推荐，不然违反了上述的多人协作原则），并且可以更换数据源。</li>
+<li>tag系统在业务逻辑层面上的统一规范，包括数据格式，UI交互，能够处理资源整理的常见痛点，比如想法一里面的内容。</li>
+<li>感觉几乎很难实现，比如良好的多人协作的社区运作机制、比如技术上的难点，包括软件和数据库的设计，持续迭代，同步数据库机制、比如文件元信息标准的实现（图书馆、情报与档案管理可是一级学科）</li>
+<li>可以先尝试某特定的一种资源，比如gal或者同人志进行schema设计和整体框架设计</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+<p>最后是希望大家多给我<strong>泼冷水</strong>，让我意识到自己想的<strong>太简单了</strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://liubei2077.github.io/2020/11/01/%E6%A0%87%E7%AD%BE%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%80%9D%E8%80%83/" data-id="ckgz4puk3000azmn58fa95upp" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-async函数的return问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/01/async%E5%87%BD%E6%95%B0%E7%9A%84return%E9%97%AE%E9%A2%98/" class="article-date">
+  <time datetime="2020-11-01T13:07:14.118Z" itemprop="datePublished">2020-11-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        let main = async () => {
+  console.log(1)
+  return "res"
+  console.log(2)
+}
+
+main().then((value) => {
+  console.log(value)
+})
+
+// print result
+// 1
+// res
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://liubei2077.github.io/2020/11/01/async%E5%87%BD%E6%95%B0%E7%9A%84return%E9%97%AE%E9%A2%98/" data-id="ckgz4pujm0000zmn593d975xu" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-css获取图片原始大小的小技巧" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/01/css%E8%8E%B7%E5%8F%96%E5%9B%BE%E7%89%87%E5%8E%9F%E5%A7%8B%E5%A4%A7%E5%B0%8F%E7%9A%84%E5%B0%8F%E6%8A%80%E5%B7%A7/" class="article-date">
+  <time datetime="2020-11-01T13:07:14.118Z" itemprop="datePublished">2020-11-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        var screenImage = document.getElementById('#img')
+
+// Create new offscreen image to test
+var theImage = new Image();
+theImage.src = screenImage.src;
+
+// Get accurate measurements from that.
+var imageWidth = theImage.width;
+var imageHeight = theImage.height;
+console.log('imageWidth: ',imageWidth)
+console.log('imageHeight: ',imageHeight)
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://liubei2077.github.io/2020/11/01/css%E8%8E%B7%E5%8F%96%E5%9B%BE%E7%89%87%E5%8E%9F%E5%A7%8B%E5%A4%A7%E5%B0%8F%E7%9A%84%E5%B0%8F%E6%8A%80%E5%B7%A7/" data-id="ckgz4puju0002zmn508voayzf" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-css获取图片原始大小的小技巧" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/01/css%E8%8E%B7%E5%8F%96%E5%9B%BE%E7%89%87%E5%8E%9F%E5%A7%8B%E5%A4%A7%E5%B0%8F%E7%9A%84%E5%B0%8F%E6%8A%80%E5%B7%A7/" class="article-date">
+  <time datetime="2020-11-01T13:07:14.118Z" itemprop="datePublished">2020-11-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/01/css%E8%8E%B7%E5%8F%96%E5%9B%BE%E7%89%87%E5%8E%9F%E5%A7%8B%E5%A4%A7%E5%B0%8F%E7%9A%84%E5%B0%8F%E6%8A%80%E5%B7%A7/">css获取图片原始大小的小技巧</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="css获取图片原始大小的小技巧"><a href="#css获取图片原始大小的小技巧" class="headerlink" title="css获取图片原始大小的小技巧"></a>css获取图片原始大小的小技巧</h1><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Get on screen image</span></span><br><span class="line"><span class="keyword">var</span> screenImage = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;#img&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create new offscreen image to test</span></span><br><span class="line"><span class="keyword">var</span> theImage = <span class="keyword">new</span> Image();</span><br><span class="line">theImage.src = screenImage.src;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Get accurate measurements from that.</span></span><br><span class="line"><span class="keyword">var</span> imageWidth = theImage.width;</span><br><span class="line"><span class="keyword">var</span> imageHeight = theImage.height;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;imageWidth: &#x27;</span>,imageWidth)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;imageHeight: &#x27;</span>,imageHeight)</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://liubei2077.github.io/2020/11/01/css%E8%8E%B7%E5%8F%96%E5%9B%BE%E7%89%87%E5%8E%9F%E5%A7%8B%E5%A4%A7%E5%B0%8F%E7%9A%84%E5%B0%8F%E6%8A%80%E5%B7%A7/" data-id="ckgz4pujv0003zmn56ujn1xy0" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-one-dark-pro" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/01/one-dark-pro/" class="article-date">
+  <time datetime="2020-11-01T13:07:14.118Z" itemprop="datePublished">2020-11-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/01/one-dark-pro/">one dark pro 影响 markdown font-size</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>one dark pro 是 vscode的一个主题，默认会开启对markdown preview加样式</p>
+<p>但是除了颜色还加了字体样式，导致在vscode中无论怎么设置markdown preview字体，都不会生效</p>
+<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><p>貌似可以自定义配置font-size，但是因为标题，代码块各种部分的字体都要设置，很麻烦，暂时先不动，有空更新。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://liubei2077.github.io/2020/11/01/one-dark-pro/" data-id="ckgz4pujx0005zmn50yn8317r" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-实用工具软件" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/01/%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7%E8%BD%AF%E4%BB%B6/" class="article-date">
+  <time datetime="2020-11-01T13:07:14.118Z" itemprop="datePublished">2020-11-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/01/%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7%E8%BD%AF%E4%BB%B6/">实用工具软件</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>WizTree 非常好用<br>WizFile</p>
+<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://liubei2077.github.io/2020/11/01/%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7%E8%BD%AF%E4%BB%B6/" data-id="ckgz4puk10008zmn5hpoldzku" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-标签系统的思考" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/01/%E6%A0%87%E7%AD%BE%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%80%9D%E8%80%83/" class="article-date">
+  <time datetime="2020-11-01T13:07:14.118Z" itemprop="datePublished">2020-11-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        let metaInfo = {
+  原作名称: ["かぐや様は告らせたい〜天才たちの恋愛頭脳戦〜"],
+  中文名称: [
+    "辉夜大小姐想让我告白",
+    "辉夜大小姐想让我告白～天才们的恋爱头脑战～",
+  ],
+}
+
+let characterSchema = {
+  officialName: "千斗 いすず",
+  avatar: "./img/1030042352.jpg",
+  alias: ["せんと", "いすず", "千斗", "五十铃", "千斗 五十铃", "500"],
+}
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://liubei2077.github.io/2020/11/01/%E6%A0%87%E7%AD%BE%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%80%9D%E8%80%83/" data-id="ckgz4puk20009zmn5fl3r4qgr" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-阻止冒泡" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/01/%E9%98%BB%E6%AD%A2%E5%86%92%E6%B3%A1/" class="article-date">
+  <time datetime="2020-11-01T13:07:14.118Z" itemprop="datePublished">2020-11-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/01/%E9%98%BB%E6%AD%A2%E5%86%92%E6%B3%A1/">阻止冒泡</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>在某个网站上，通过脚本增加了一个div元素，并且添加了onCLick事件。实际点击后，不仅执行了脚本上onCLick回调，还执行了脚本里没有的内容。判断是div元素的父元素也有onClick事件，产生了冒泡。</p>
+<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><p>通过e.stopPropagation()，阻止冒泡</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://liubei2077.github.io/2020/11/01/%E9%98%BB%E6%AD%A2%E5%86%92%E6%B3%A1/" data-id="ckgz4puk4000bzmn5huel6wvy" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="title-vscode显示-git" class="article article-type-title" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/10/31/vscode%E6%98%BE%E7%A4%BA-git/" class="article-date">
@@ -90,7 +442,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://liubei2077.github.io/2020/10/31/vscode%E6%98%BE%E7%A4%BA-git/" data-id="ckgwjrp3d000603lyfltc95ry" class="article-share-link">Share</a>
+      <a data-url="http://liubei2077.github.io/2020/10/31/vscode%E6%98%BE%E7%A4%BA-git/" data-id="ckgz4pujz0006zmn5dsvh7gci" class="article-share-link">Share</a>
       
       
     </footer>
@@ -130,308 +482,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://liubei2077.github.io/2020/10/31/async%E5%87%BD%E6%95%B0%E7%9A%84return%E9%97%AE%E9%A2%98/" data-id="ckgwjrp36000103ly8gzm2dh1" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="title-同时执行多个node命令" class="article article-type-title" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/10/30/%E5%90%8C%E6%97%B6%E6%89%A7%E8%A1%8C%E5%A4%9A%E4%B8%AAnode%E5%91%BD%E4%BB%A4/" class="article-date">
-  <time datetime="2020-10-30T23:22:35.000Z" itemprop="datePublished">2020-10-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/30/%E5%90%8C%E6%97%B6%E6%89%A7%E8%A1%8C%E5%A4%9A%E4%B8%AAnode%E5%91%BD%E4%BB%A4/">同时执行多个node命令</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>可以使用<code>concurrently</code> npm包</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://liubei2077.github.io/2020/10/30/%E5%90%8C%E6%97%B6%E6%89%A7%E8%A1%8C%E5%A4%9A%E4%B8%AAnode%E5%91%BD%E4%BB%A4/" data-id="ckgwjrp3e000703ly8ioq9ehj" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="title-node-优秀npm工具包" class="article article-type-title" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/10/30/node-%E4%BC%98%E7%A7%80npm%E5%B7%A5%E5%85%B7%E5%8C%85/" class="article-date">
-  <time datetime="2020-10-30T23:19:37.000Z" itemprop="datePublished">2020-10-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/30/node-%E4%BC%98%E7%A7%80npm%E5%B7%A5%E5%85%B7%E5%8C%85/">node-优秀npm工具包</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="concurrently"><a href="#concurrently" class="headerlink" title="concurrently"></a>concurrently</h3><p>同时运行多个 node 命令</p>
-<p>常见实例：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// package.json</span></span><br><span class="line"><span class="string">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">  <span class="string">&quot;dev&quot;</span>: <span class="string">&quot;concurrently \&quot;tsc -w\&quot; \&quot;node ./dist/server/index.js\&quot;&quot;</span>,</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://liubei2077.github.io/2020/10/30/node-%E4%BC%98%E7%A7%80npm%E5%B7%A5%E5%85%B7%E5%8C%85/" data-id="ckgwjrp3b000403lyd4bs2xn6" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-async函数的return问题" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/10/30/async%E5%87%BD%E6%95%B0%E7%9A%84return%E9%97%AE%E9%A2%98/" class="article-date">
-  <time datetime="2020-10-30T17:45:16.986Z" itemprop="datePublished">2020-10-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        let main = async () => {
-  console.log(1)
-  return "res"
-  console.log(2)
-}
-
-main().then((value) => {
-  console.log(value)
-})
-
-// print result
-// 1
-// res
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://liubei2077.github.io/2020/10/30/async%E5%87%BD%E6%95%B0%E7%9A%84return%E9%97%AE%E9%A2%98/" data-id="ckgwjrp31000003ly6aukfkuk" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-css获取图片原始大小的小技巧" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/10/30/css%E8%8E%B7%E5%8F%96%E5%9B%BE%E7%89%87%E5%8E%9F%E5%A7%8B%E5%A4%A7%E5%B0%8F%E7%9A%84%E5%B0%8F%E6%8A%80%E5%B7%A7/" class="article-date">
-  <time datetime="2020-10-30T17:45:16.986Z" itemprop="datePublished">2020-10-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        var screenImage = document.getElementById('#img')
-
-// Create new offscreen image to test
-var theImage = new Image();
-theImage.src = screenImage.src;
-
-// Get accurate measurements from that.
-var imageWidth = theImage.width;
-var imageHeight = theImage.height;
-console.log('imageWidth: ',imageWidth)
-console.log('imageHeight: ',imageHeight)
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://liubei2077.github.io/2020/10/30/css%E8%8E%B7%E5%8F%96%E5%9B%BE%E7%89%87%E5%8E%9F%E5%A7%8B%E5%A4%A7%E5%B0%8F%E7%9A%84%E5%B0%8F%E6%8A%80%E5%B7%A7/" data-id="ckgwjrp38000203lyen4dc78h" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-css获取图片原始大小的小技巧" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/10/30/css%E8%8E%B7%E5%8F%96%E5%9B%BE%E7%89%87%E5%8E%9F%E5%A7%8B%E5%A4%A7%E5%B0%8F%E7%9A%84%E5%B0%8F%E6%8A%80%E5%B7%A7/" class="article-date">
-  <time datetime="2020-10-30T17:45:16.986Z" itemprop="datePublished">2020-10-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/30/css%E8%8E%B7%E5%8F%96%E5%9B%BE%E7%89%87%E5%8E%9F%E5%A7%8B%E5%A4%A7%E5%B0%8F%E7%9A%84%E5%B0%8F%E6%8A%80%E5%B7%A7/">css获取图片原始大小的小技巧</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="css获取图片原始大小的小技巧"><a href="#css获取图片原始大小的小技巧" class="headerlink" title="css获取图片原始大小的小技巧"></a>css获取图片原始大小的小技巧</h1><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Get on screen image</span></span><br><span class="line"><span class="keyword">var</span> screenImage = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;#img&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create new offscreen image to test</span></span><br><span class="line"><span class="keyword">var</span> theImage = <span class="keyword">new</span> Image();</span><br><span class="line">theImage.src = screenImage.src;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Get accurate measurements from that.</span></span><br><span class="line"><span class="keyword">var</span> imageWidth = theImage.width;</span><br><span class="line"><span class="keyword">var</span> imageHeight = theImage.height;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;imageWidth: &#x27;</span>,imageWidth)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;imageHeight: &#x27;</span>,imageHeight)</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://liubei2077.github.io/2020/10/30/css%E8%8E%B7%E5%8F%96%E5%9B%BE%E7%89%87%E5%8E%9F%E5%A7%8B%E5%A4%A7%E5%B0%8F%E7%9A%84%E5%B0%8F%E6%8A%80%E5%B7%A7/" data-id="ckgwjrp3a000303lyaup1eanf" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-one-dark-pro" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/10/30/one-dark-pro/" class="article-date">
-  <time datetime="2020-10-30T17:45:16.986Z" itemprop="datePublished">2020-10-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/30/one-dark-pro/">one dark pro 影响 markdown font-size</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>one dark pro 是 vscode的一个主题，默认会开启对markdown preview加样式</p>
-<p>但是除了颜色还加了字体样式，导致在vscode中无论怎么设置markdown preview字体，都不会生效</p>
-<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><p>貌似可以自定义配置font-size，但是因为标题，代码块各种部分的字体都要设置，很麻烦，暂时先不动，有空更新。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://liubei2077.github.io/2020/10/30/one-dark-pro/" data-id="ckgwjrp3c000503lyejg94c5g" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-实用工具软件" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/10/30/%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7%E8%BD%AF%E4%BB%B6/" class="article-date">
-  <time datetime="2020-10-30T17:45:16.986Z" itemprop="datePublished">2020-10-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/30/%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7%E8%BD%AF%E4%BB%B6/">实用工具软件</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>WizTree 非常好用<br>WizFile</p>
-<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://liubei2077.github.io/2020/10/30/%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7%E8%BD%AF%E4%BB%B6/" data-id="ckgwjrp3f000803lyheggbpu0" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-阻止冒泡" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/10/30/%E9%98%BB%E6%AD%A2%E5%86%92%E6%B3%A1/" class="article-date">
-  <time datetime="2020-10-30T17:45:16.986Z" itemprop="datePublished">2020-10-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/30/%E9%98%BB%E6%AD%A2%E5%86%92%E6%B3%A1/">阻止冒泡</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>在某个网站上，通过脚本增加了一个div元素，并且添加了onCLick事件。实际点击后，不仅执行了脚本上onCLick回调，还执行了脚本里没有的内容。判断是div元素的父元素也有onClick事件，产生了冒泡。</p>
-<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><p>通过e.stopPropagation()，阻止冒泡</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://liubei2077.github.io/2020/10/30/%E9%98%BB%E6%AD%A2%E5%86%92%E6%B3%A1/" data-id="ckgwjrp3g000903ly7otxgbxi" class="article-share-link">Share</a>
+      <a data-url="http://liubei2077.github.io/2020/10/31/async%E5%87%BD%E6%95%B0%E7%9A%84return%E9%97%AE%E9%A2%98/" data-id="ckgz4pujs0001zmn5fytl2dhf" class="article-share-link">Share</a>
       
       
     </footer>
@@ -442,6 +493,11 @@ console.log('imageHeight: ',imageHeight)
 
   
 
+
+  <nav id="page-nav">
+    
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+  </nav>
 
 </section>
         
@@ -459,7 +515,7 @@ console.log('imageHeight: ',imageHeight)
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li></ul>
     </div>
   </div>
 
@@ -472,23 +528,23 @@ console.log('imageHeight: ',imageHeight)
       <ul>
         
           <li>
-            <a href="/2020/10/31/vscode%E6%98%BE%E7%A4%BA-git/">vscode显示.git</a>
+            <a href="/2020/11/01/%E6%A0%87%E7%AD%BE%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%80%9D%E8%80%83/">标签系统的思考</a>
           </li>
         
           <li>
-            <a href="/2020/10/31/async%E5%87%BD%E6%95%B0%E7%9A%84return%E9%97%AE%E9%A2%98/">async函数的return问题</a>
+            <a href="/2020/11/01/async%E5%87%BD%E6%95%B0%E7%9A%84return%E9%97%AE%E9%A2%98/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2020/10/30/%E5%90%8C%E6%97%B6%E6%89%A7%E8%A1%8C%E5%A4%9A%E4%B8%AAnode%E5%91%BD%E4%BB%A4/">同时执行多个node命令</a>
+            <a href="/2020/11/01/css%E8%8E%B7%E5%8F%96%E5%9B%BE%E7%89%87%E5%8E%9F%E5%A7%8B%E5%A4%A7%E5%B0%8F%E7%9A%84%E5%B0%8F%E6%8A%80%E5%B7%A7/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2020/10/30/node-%E4%BC%98%E7%A7%80npm%E5%B7%A5%E5%85%B7%E5%8C%85/">node-优秀npm工具包</a>
+            <a href="/2020/11/01/css%E8%8E%B7%E5%8F%96%E5%9B%BE%E7%89%87%E5%8E%9F%E5%A7%8B%E5%A4%A7%E5%B0%8F%E7%9A%84%E5%B0%8F%E6%8A%80%E5%B7%A7/">css获取图片原始大小的小技巧</a>
           </li>
         
           <li>
-            <a href="/2020/10/30/async%E5%87%BD%E6%95%B0%E7%9A%84return%E9%97%AE%E9%A2%98/">(no title)</a>
+            <a href="/2020/11/01/one-dark-pro/">one dark pro 影响 markdown font-size</a>
           </li>
         
       </ul>

@@ -5,16 +5,16 @@
   
 
   
-  <title>vscode显示.git | Hexo</title>
+  <title>阻止冒泡 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="123&quot;files.exclude&quot;: &amp;#123;    &quot;**&#x2F;.git&quot;: false &amp;#125;">
+  <meta name="description" content="起因在某个网站上，通过脚本增加了一个div元素，并且添加了onCLick事件。实际点击后，不仅执行了脚本上onCLick回调，还执行了脚本里没有的内容。判断是div元素的父元素也有onClick事件，产生了冒泡。 解法通过e.stopPropagation()，阻止冒泡">
 <meta property="og:type" content="article">
-<meta property="og:title" content="vscode显示.git">
-<meta property="og:url" content="http://liubei2077.github.io/2020/10/31/vscode%E6%98%BE%E7%A4%BA-git/index.html">
+<meta property="og:title" content="阻止冒泡">
+<meta property="og:url" content="http://liubei2077.github.io/2020/11/01/%E9%98%BB%E6%AD%A2%E5%86%92%E6%B3%A1/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="123&quot;files.exclude&quot;: &amp;#123;    &quot;**&#x2F;.git&quot;: false &amp;#125;">
+<meta property="og:description" content="起因在某个网站上，通过脚本增加了一个div元素，并且添加了onCLick事件。实际点击后，不仅执行了脚本上onCLick回调，还执行了脚本里没有的内容。判断是div元素的父元素也有onClick事件，产生了冒泡。 解法通过e.stopPropagation()，阻止冒泡">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-10-31T01:07:21.000Z">
+<meta property="article:published_time" content="2020-11-01T13:07:14.118Z">
 <meta property="article:modified_time" content="2020-11-01T13:07:14.118Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
@@ -66,10 +66,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="title-vscode显示-git" class="article article-type-title" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-阻止冒泡" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/10/31/vscode%E6%98%BE%E7%A4%BA-git/" class="article-date">
-  <time datetime="2020-10-31T01:07:21.000Z" itemprop="datePublished">2020-10-31</time>
+    <a href="/2020/11/01/%E9%98%BB%E6%AD%A2%E5%86%92%E6%B3%A1/" class="article-date">
+  <time datetime="2020-11-01T13:07:14.118Z" itemprop="datePublished">2020-11-01</time>
 </a>
     
   </div>
@@ -80,7 +80,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      vscode显示.git
+      阻止冒泡
     </h1>
   
 
@@ -88,11 +88,13 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;files.exclude&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;**/.git&quot;</span>: <span class="literal">false</span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+        <h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>在某个网站上，通过脚本增加了一个div元素，并且添加了onCLick事件。实际点击后，不仅执行了脚本上onCLick回调，还执行了脚本里没有的内容。判断是div元素的父元素也有onClick事件，产生了冒泡。</p>
+<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><p>通过e.stopPropagation()，阻止冒泡</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://liubei2077.github.io/2020/10/31/vscode%E6%98%BE%E7%A4%BA-git/" data-id="ckgz4pujz0006zmn5dsvh7gci" class="article-share-link">Share</a>
+      <a data-url="http://liubei2077.github.io/2020/11/01/%E9%98%BB%E6%AD%A2%E5%86%92%E6%B3%A1/" data-id="ckgz4puk4000bzmn5huel6wvy" class="article-share-link">Share</a>
       
       
     </footer>
@@ -101,19 +103,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2020/11/01/%E9%98%BB%E6%AD%A2%E5%86%92%E6%B3%A1/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2020/11/01/%E6%A0%87%E7%AD%BE%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%80%9D%E8%80%83/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          阻止冒泡
+          (no title)
         
       </div>
     </a>
   
   
-    <a href="/2020/10/31/async%E5%87%BD%E6%95%B0%E7%9A%84return%E9%97%AE%E9%A2%98/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2020/10/31/vscode%E6%98%BE%E7%A4%BA-git/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">async函数的return问题</div>
+      <div class="article-nav-title">vscode显示.git</div>
     </a>
   
 </nav>
