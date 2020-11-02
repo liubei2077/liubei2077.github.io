@@ -5,16 +5,16 @@
   
 
   
-  <title>node-优秀npm工具包 | Hexo</title>
+  <title>打开新窗口的若干技巧 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="concurrently同时运行多个 node 命令 常见实例： 1234&#x2F;&#x2F; package.json&quot;scripts&quot;: &amp;#123;  &quot;dev&quot;: &quot;concurrently \&quot;tsc -w\&quot; \&quot;node .&#x2F;dist&#x2F;server&#x2F;index.js\&quot;&quot;,&amp;#125;,">
+  <meta name="description" content="window.open() 12345678910var newWin &#x3D; function(url, id) &amp;#123;&#x2F;&#x2F;为防止window.open被浏览器拦截，此处使用a标签打开var a &#x3D; document.createElement(&amp;#x27;a&amp;#x27;);a.setAttribute(&amp;#x27;href&amp;#x27;, url);a.setAttribute(&amp;#x27;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="node-优秀npm工具包">
-<meta property="og:url" content="http://liubei2077.github.io/2020/10/30/node-%E4%BC%98%E7%A7%80npm%E5%B7%A5%E5%85%B7%E5%8C%85/index.html">
+<meta property="og:title" content="打开新窗口的若干技巧">
+<meta property="og:url" content="http://liubei2077.github.io/2020/11/01/%E6%89%93%E5%BC%80%E6%96%B0%E7%AA%97%E5%8F%A3%E7%9A%84%E8%8B%A5%E5%B9%B2%E6%8A%80%E5%B7%A7/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="concurrently同时运行多个 node 命令 常见实例： 1234&#x2F;&#x2F; package.json&quot;scripts&quot;: &amp;#123;  &quot;dev&quot;: &quot;concurrently \&quot;tsc -w\&quot; \&quot;node .&#x2F;dist&#x2F;server&#x2F;index.js\&quot;&quot;,&amp;#125;,">
+<meta property="og:description" content="window.open() 12345678910var newWin &#x3D; function(url, id) &amp;#123;&#x2F;&#x2F;为防止window.open被浏览器拦截，此处使用a标签打开var a &#x3D; document.createElement(&amp;#x27;a&amp;#x27;);a.setAttribute(&amp;#x27;href&amp;#x27;, url);a.setAttribute(&amp;#x27;">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-10-30T23:19:37.000Z">
+<meta property="article:published_time" content="2020-11-01T23:13:09.000Z">
 <meta property="article:modified_time" content="2020-11-02T15:01:20.173Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
@@ -66,10 +66,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="title-node-优秀npm工具包" class="article article-type-title" itemscope itemprop="blogPost">
+        <section id="main"><article id="title-打开新窗口的若干技巧" class="article article-type-title" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/10/30/node-%E4%BC%98%E7%A7%80npm%E5%B7%A5%E5%85%B7%E5%8C%85/" class="article-date">
-  <time datetime="2020-10-30T23:19:37.000Z" itemprop="datePublished">2020-10-30</time>
+    <a href="/2020/11/01/%E6%89%93%E5%BC%80%E6%96%B0%E7%AA%97%E5%8F%A3%E7%9A%84%E8%8B%A5%E5%B9%B2%E6%8A%80%E5%B7%A7/" class="article-date">
+  <time datetime="2020-11-01T23:13:09.000Z" itemprop="datePublished">2020-11-01</time>
 </a>
     
   </div>
@@ -80,7 +80,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      node-优秀npm工具包
+      打开新窗口的若干技巧
     </h1>
   
 
@@ -88,14 +88,20 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="concurrently"><a href="#concurrently" class="headerlink" title="concurrently"></a>concurrently</h3><p>同时运行多个 node 命令</p>
-<p>常见实例：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// package.json</span></span><br><span class="line"><span class="string">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">  <span class="string">&quot;dev&quot;</span>: <span class="string">&quot;concurrently \&quot;tsc -w\&quot; \&quot;node ./dist/server/index.js\&quot;&quot;</span>,</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+        <ol>
+<li><p>window.open()</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> newWin = <span class="function"><span class="keyword">function</span>(<span class="params">url, id</span>) </span>&#123;</span><br><span class="line"><span class="comment">//为防止window.open被浏览器拦截，此处使用a标签打开</span></span><br><span class="line"><span class="keyword">var</span> a = <span class="built_in">document</span>.createElement(<span class="string">&#x27;a&#x27;</span>);</span><br><span class="line">a.setAttribute(<span class="string">&#x27;href&#x27;</span>, url);</span><br><span class="line">a.setAttribute(<span class="string">&#x27;target&#x27;</span>, <span class="string">&#x27;_blank&#x27;</span>);</span><br><span class="line">a.setAttribute(<span class="string">&#x27;id&#x27;</span>, id);</span><br><span class="line"><span class="comment">// 防止反复添加</span></span><br><span class="line"><span class="keyword">if</span>(!<span class="built_in">document</span>.getElementById(id)) <span class="built_in">document</span>.body.appendChild(a);</span><br><span class="line">a.click();</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>href</p>
+</li>
+<li><p>jsb</p>
+</li>
+</ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://liubei2077.github.io/2020/10/30/node-%E4%BC%98%E7%A7%80npm%E5%B7%A5%E5%85%B7%E5%8C%85/" data-id="ckh0o8fe30005yvkgf95kcdso" class="article-share-link">Share</a>
+      <a data-url="http://liubei2077.github.io/2020/11/01/%E6%89%93%E5%BC%80%E6%96%B0%E7%AA%97%E5%8F%A3%E7%9A%84%E8%8B%A5%E5%B9%B2%E6%8A%80%E5%B7%A7/" data-id="ckh0o8fe9000ayvkgcjgggm02" class="article-share-link">Share</a>
       
       
     </footer>
@@ -104,15 +110,20 @@
     
 <nav id="article-nav">
   
-    <a href="/2020/10/30/%E5%90%8C%E6%97%B6%E6%89%A7%E8%A1%8C%E5%A4%9A%E4%B8%AAnode%E5%91%BD%E4%BB%A4/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2020/11/02/%E9%98%BB%E6%AD%A2%E5%86%92%E6%B3%A1/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          同时执行多个node命令
+          阻止冒泡
         
       </div>
     </a>
   
+  
+    <a href="/2020/11/01/%E6%A0%87%E7%AD%BE%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%80%9D%E8%80%83/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">标签系统的思考</div>
+    </a>
   
 </nav>
 
